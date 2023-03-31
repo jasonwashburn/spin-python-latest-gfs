@@ -1,8 +1,9 @@
-from spin_http import Response, Request, http_send
-from datetime import datetime, timedelta
-import xml.etree.ElementTree as ET
-from typing import Optional
 import json
+import xml.etree.ElementTree as ET
+from datetime import datetime, timedelta
+from typing import Optional
+
+from spin_http import Request, Response, http_send
 
 MODEL_HOUR_INTERVAL = 6
 NUM_EXPECTED_FORECASTS = 209
