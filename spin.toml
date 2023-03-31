@@ -6,10 +6,10 @@ trigger = { type = "http", base = "/" }
 version = "0.1.0"
 
 [[component]]
-id = "spin-python-latest-gfs"
+id = "gfs-latest"
 source = "app.wasm"
 allowed_http_hosts = ["https://noaa-gfs-bdp-pds.s3.amazonaws.com"]
 [component.trigger]
-route = "/..."
+route = "/gfs/latest/..."
 [component.build]
-command = "spin py2wasm app -o app.wasm"
+command = "spin py2wasm gfs-latest -o gfs-latest.wasm"
