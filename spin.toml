@@ -7,7 +7,7 @@ version = "0.1.0"
 
 [[component]]
 id = "gfs-latest"
-source = "app.wasm"
+source = "gfs-latest.wasm"
 allowed_http_hosts = ["https://noaa-gfs-bdp-pds.s3.amazonaws.com"]
 [component.trigger]
 route = "/gfs/latest/..."
