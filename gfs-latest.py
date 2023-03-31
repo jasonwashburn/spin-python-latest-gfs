@@ -1,4 +1,5 @@
 import json
+import logging
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from typing import Optional
@@ -9,8 +10,19 @@ MODEL_HOUR_INTERVAL = 6
 NUM_EXPECTED_FORECASTS = 209
 S3_BUCKET = "noaa-gfs-bdp-pds"
 
+logging.basicConfig(
+    format="%(levelname)s: %(asctime)s %(message)s",
+    datefmt="%m/%d/%Y %I:%M:%S %p",
+    level=logging.DEBUG,
+)
+
 
 def handle_request(request):
+    logging.info(
+        'Received Request: {"route": %s, "host": %s}',
+        request.uri,
+        request.headers[0][1],
+    )
     latest_run = get_latest_complete_run()
     prefix = build_s3_prefix(model_run=latest_run).rsplit("/", maxsplit=1)[0]
     url = f"https://{S3_BUCKET}.s3.amazonaws.com/index.html#{prefix}/"
@@ -36,7 +48,6 @@ def build_s3_prefix(model_run: datetime) -> str:
 
 def build_url(model_run: datetime) -> str:
     prefix = build_s3_prefix(model_run=model_run)
-
     url = f"https://{S3_BUCKET}.s3.amazonaws.com/?list-type=2&prefix={prefix}"
     return url
 
@@ -84,5 +95,12 @@ def get_latest_complete_run() -> Optional[datetime]:
 
     for run in runs_to_try:
         forecasts = get_available_forecasts(model_run=run)
-        if len(forecasts) == 209:
+        num_forecasts = len(forecasts)
+        if num_forecasts == 209:
+            logging.info(
+                "Found COMPLETE (%d forecasts) run: %s", num_forecasts, run.isoformat()
+            )
             return run
+        logging.info(
+            "Found incomplete (%d forecasts) run: %s", num_forecasts, run.isoformat()
+        )
