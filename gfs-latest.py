@@ -46,8 +46,6 @@ def get_available_forecasts(model_run: datetime) -> set[int]:
 
     resp = http_send(Request("GET", url, [], None))
     root = ET.fromstring(resp.body)
-    # with requests.get(url) as resp:
-    #     root = ET.fromstring(resp.text)
 
     xmlns = "{http://s3.amazonaws.com/doc/2006-03-01/}"
     available_keys = set()
