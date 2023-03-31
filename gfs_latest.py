@@ -2,10 +2,11 @@
 
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from xml.etree import ElementTree
 
 from spin_http import Request, Response, http_send
+
 from spinwx.gfs import build_s3_prefix, build_url, calc_latest_possible_run
 
 MODEL_HOUR_INTERVAL = 6
@@ -81,7 +82,7 @@ def get_latest_complete_run() -> datetime | None:
             model run was found.
     """
     max_runs_to_try = 3
-    latest_possible_run = calc_latest_possible_run()
+    latest_possible_run = calc_latest_possible_run(now=datetime.now(tz=timezone.utc))
     runs_to_try = [
         latest_possible_run - timedelta(hours=i * MODEL_HOUR_INTERVAL)
         for i in range(max_runs_to_try)

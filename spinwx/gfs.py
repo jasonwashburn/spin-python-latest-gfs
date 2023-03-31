@@ -43,14 +43,16 @@ def build_url(model_run: datetime) -> str:
     return f"https://{S3_BUCKET}.s3.amazonaws.com/?list-type=2&prefix={prefix}"
 
 
-def calc_latest_possible_run() -> datetime:
+def calc_latest_possible_run(now: datetime) -> datetime:
     """Calculate the latest possible model run time.
+
+    Args:
+        now (datetime): The current time.
 
     Returns:
         datetime: The latest possible model run time.
     """
     estimated_model_delay = timedelta(hours=2)
-    now = datetime.now(tz=timezone.utc)
     adjusted_base_time = now - estimated_model_delay
     hour = adjusted_base_time.hour
     run_hour = MODEL_HOUR_INTERVAL * (hour // MODEL_HOUR_INTERVAL)

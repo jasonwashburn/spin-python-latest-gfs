@@ -6,8 +6,10 @@ name = "pypi"
 [packages]
 pytest = "*"
 ruff = "*"
+pytest-mock = "*"
 
 [dev-packages]
+black = "*"
 
 [requires]
 python_version = "3.10"
