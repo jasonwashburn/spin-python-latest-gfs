@@ -1,0 +1,14 @@
+spin_manifest_version = "1"
+authors = ["Jason Washburn <jason.washburn@gmail.com>"]
+description = "Get latest GFS run from AWS Open Data."
+name = "spin-python-latest-gfs"
+trigger = { type = "http", base = "/" }
+version = "0.1.0"
+
+[[component]]
+id = "spin-python-latest-gfs"
+source = "app.wasm"
+[component.trigger]
+route = "/..."
+[component.build]
+command = "spin py2wasm app -o app.wasm"
