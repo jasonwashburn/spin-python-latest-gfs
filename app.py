@@ -11,10 +11,13 @@ S3_BUCKET = "noaa-gfs-bdp-pds"
 
 def handle_request(request):
     latest_run = get_latest_complete_run()
+    prefix = build_s3_prefix(model_run=latest_run).rsplit("/", maxsplit=1)[0]
+    url = f"https://{S3_BUCKET}.s3.amazonaws.com/index.html#{prefix}/"
     response = json.dumps(
         {
             "bucket": S3_BUCKET,
-            "prefix": build_s3_prefix(model_run=latest_run),
+            "prefix": prefix,
+            "url": url.rsplit(),
             "latest_run": latest_run.isoformat(),
         }
     )
